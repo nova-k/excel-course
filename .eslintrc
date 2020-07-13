@@ -10,7 +10,8 @@
 		"linebreak-style": "off",
 		"no-tabs": "off",
 		"indent": "off",
-		"no-dupe-keys": "off"
+		"no-dupe-keys": "off",
+		"eol-last": "off"
 	},
 	"extends": [
 		"eslint:recommended",
