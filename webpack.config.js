@@ -1,5 +1,5 @@
 const path = require('path');
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HTMLWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -20,6 +20,7 @@ const jsLoaders = () => {
 			loader: 'babel-loader',
 			options: {
 				presets: ['@babel/preset-env'],
+				plugins: ['@babel/plugin-proposal-class-properties']
 			},
 		},
 	];
@@ -54,6 +55,10 @@ module.exports = {
 		new CleanWebpackPlugin(),
 		new HTMLWebpackPlugin({
 			template: 'index.html',
+			minify: {
+				removeComments: isProd,
+				collapseWhitespace: isProd
+			}
 		}),
 		new CopyPlugin({
 			patterns: [
