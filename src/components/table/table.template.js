@@ -1,53 +1,56 @@
 const CODES = {
-	A: 65,
-	Z: 90
+  A: 65,
+  Z: 90,
+};
+
+function toCell(_, col) {
+  return `
+		<div class="cell" contenteditable data-col=${col}></div>
+	`;
 }
 
-function toCell() {
-	return `
-		<div class="cell" contenteditable></div>
-	`
-}
-
-function createCol(col) {
-	return `
-		<div class="column">${col}</div>
-	`
+function toColumn(col, index) {
+  return `
+		<div class="column" data-type="resizable" data-col=${index}>
+			${col}
+			<div class="col-resize" data-resize="col"></div>
+		</div>
+	`;
 }
 
 function createRow(index, content) {
-	return `
-		<div class="row">
-			<div class="row-info">${index ? index :''}</div>
+  const resize = index
+    ? '<div class="row-resize" data-resize="row"></div>'
+    : "";
+  return `
+		<div class="row" data-type="resizable">
+			<div class="row-info">
+				${index ? index : ""}
+				${resize}
+			</div>
 			<div class="row-data">${content}</div>
 		</div>
-	`
+	`;
 }
 
 export function createTable(rowsCount = 25) {
-	const colsCounts = CODES.Z - CODES.A + 1
-	const rows = []
+  const colsCounts = CODES.Z - CODES.A + 1;
+  const rows = [];
 
-	const cols = new Array(colsCounts)
-		.fill('')
-		.map((el, index) => {
-			return String.fromCharCode(CODES.A + index)
-		})
-		.map((el) => {
-			return createCol(el)
-		})
-		.join('')
+  const cols = new Array(colsCounts)
+    .fill("")
+    .map((_, index) => {
+      return String.fromCharCode(CODES.A + index);
+    })
+    .map(toColumn)
+    .join("");
 
-	rows.push(createRow(null, cols))
+  rows.push(createRow(null, cols));
 
-	for (let i = 0; i < rowsCount; i++) {
-		const cells = new Array(colsCounts)
-			.fill('')
-			.map(toCell)
-			.join('')
-			console.log(cells);
-		rows.push(createRow(i + 1, cells))
-	}
+  for (let i = 0; i < rowsCount; i++) {
+    const cells = new Array(colsCounts).fill("").map(toCell).join("");
+    rows.push(createRow(i + 1, cells));
+  }
 
-	return rows.join('')
+  return rows.join("");
 }
